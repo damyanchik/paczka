@@ -21,8 +21,7 @@ readonly class SubscriptionRepository
             ->where('next_renewal', '<=', Carbon::now())
             ->get()
             ->map(
-                static fn (SubscriptionEntity $subscription): SubscriptionDto =>
-                new SubscriptionDto(
+                static fn (SubscriptionEntity $subscription): SubscriptionDto => new SubscriptionDto(
                     id: $subscription->id,
                     userId: $subscription->user_id,
                     email: $subscription->user->email,
@@ -60,8 +59,7 @@ readonly class SubscriptionRepository
             ->orderBy('card_expires_at')
             ->get()
             ->map(
-                static fn (SubscriptionEntity $subscription): ExpiringCardDto =>
-                new ExpiringCardDto(
+                static fn (SubscriptionEntity $subscription): ExpiringCardDto => new ExpiringCardDto(
                     subscriptionId: $subscription->id,
                     userId: $subscription->user_id,
                     email: $subscription->user->email,

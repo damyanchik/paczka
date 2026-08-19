@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 use App\Presentation\Http\Controller\ExpiringCardsController;
 use App\Presentation\Http\Controller\PromotionController;
 use App\Presentation\Http\Controller\PromotionStatsController;

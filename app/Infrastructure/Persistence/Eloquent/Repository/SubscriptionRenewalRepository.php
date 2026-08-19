@@ -15,8 +15,7 @@ readonly class SubscriptionRenewalRepository
         int $subscriptionId,
         Carbon $renewalAt,
         string $idempotencyKey,
-    ): SubscriptionRenewalDto
-    {
+    ): SubscriptionRenewalDto {
         $entity = SubscriptionRenewalEntity::query()->firstOrCreate(
             [
                 'subscription_id' => $subscriptionId,

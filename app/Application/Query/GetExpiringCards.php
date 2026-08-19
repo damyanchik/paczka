@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Application\Query;
 
+use App\Domain\DTO\ExpiringCardDto;
 use App\Infrastructure\Persistence\Eloquent\Repository\SubscriptionRepository;
 use Carbon\Carbon;
 use Illuminate\Support\Collection;
@@ -16,6 +17,7 @@ readonly class GetExpiringCards
         private SubscriptionRepository $subscriptionRepository,
     ) {}
 
+    /** @return Collection<int, ExpiringCardDto> */
     public function execute(): Collection
     {
         $today = Carbon::today();

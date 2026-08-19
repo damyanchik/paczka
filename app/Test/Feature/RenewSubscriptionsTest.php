@@ -43,7 +43,8 @@ class RenewSubscriptionsTest extends TestCase
             'active' => true,
         ]);
 
-        $paymentGateway = new class implements PaymentGateway {
+        $paymentGateway = new class implements PaymentGateway
+        {
             public int $charges = 0;
 
             public function charge(

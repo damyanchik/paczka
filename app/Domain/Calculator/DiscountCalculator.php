@@ -5,18 +5,16 @@ declare(strict_types=1);
 namespace App\Domain\Calculator;
 
 use App\Domain\Enum\PromotionTypeEnum;
-
 use InvalidArgumentException;
 use Money\Money;
 
 readonly class DiscountCalculator
 {
     public function calculate(
-        Money             $cartTotal,
+        Money $cartTotal,
         PromotionTypeEnum $type,
-        int               $discountValue,
-    ): Money
-    {
+        int $discountValue,
+    ): Money {
         if ($discountValue < 0) {
             throw new InvalidArgumentException('Discount value cannot be negative.');
         }
@@ -49,4 +47,3 @@ readonly class DiscountCalculator
             ->divide(100);
     }
 }
-

@@ -8,6 +8,5 @@ readonly class PaymentResultDto
 {
     public function __construct(
         public string $paymentId,
-    ) {
-    }
+    ) {}
 }

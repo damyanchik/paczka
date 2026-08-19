@@ -10,11 +10,10 @@ use Money\Money;
 class PromotionStatsDto
 {
     public function __construct(
-        public string            $code,
+        public string $code,
         public PromotionTypeEnum $type,
-        public int               $discountValue,
-        public int               $usages,
-        public Money             $cartSum,
-    ) {
-    }
+        public int $discountValue,
+        public int $usages,
+        public Money $cartSum,
+    ) {}
 }

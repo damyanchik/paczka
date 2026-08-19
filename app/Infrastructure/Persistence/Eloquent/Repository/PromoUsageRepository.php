@@ -19,8 +19,7 @@ readonly class PromoUsageRepository
     public function existsForCart(
         int $promoCodeId,
         int $cartId,
-    ): bool
-    {
+    ): bool {
         return PromoUsageEntity::query()
             ->where('promo_code_id', $promoCodeId)
             ->where('cart_id', $cartId)
@@ -31,8 +30,7 @@ readonly class PromoUsageRepository
         int $promoCodeId,
         int $cartId,
         string $email,
-    ): void
-    {
+    ): void {
         PromoUsageEntity::query()->create([
             'promo_code_id' => $promoCodeId,
             'cart_id' => $cartId,

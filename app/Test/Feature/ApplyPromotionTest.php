@@ -35,11 +35,11 @@ class ApplyPromotionTest extends TestCase
 
         $this->applyPromotion = new ApplyPromotion(
             connection: DB::connection(),
-            promoCodeRepository: new PromoCodeRepository(),
-            cartRepository: new CartRepository(),
-            promoUsageRepository: new PromoUsageRepository(),
-            promotionValidator: new PromotionValidator(),
-            discountCalculator: new DiscountCalculator(),
+            promoCodeRepository: new PromoCodeRepository,
+            cartRepository: new CartRepository,
+            promoUsageRepository: new PromoUsageRepository,
+            promotionValidator: new PromotionValidator,
+            discountCalculator: new DiscountCalculator,
         );
     }
 

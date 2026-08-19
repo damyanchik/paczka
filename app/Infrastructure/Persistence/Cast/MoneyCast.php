@@ -9,6 +9,7 @@ use Illuminate\Database\Eloquent\Model;
 use InvalidArgumentException;
 use Money\Money;
 
+/** @implements CastsAttributes<Money, Money> */
 readonly class MoneyCast implements CastsAttributes
 {
     public function get(
@@ -26,7 +27,7 @@ readonly class MoneyCast implements CastsAttributes
         mixed $value,
         array $attributes,
     ): int {
-        if (!$value instanceof Money) {
+        if (! $value instanceof Money) {
             throw new InvalidArgumentException(
                 'Value must be an instance of Money.'
             );

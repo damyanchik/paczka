@@ -10,11 +10,11 @@ use Money\Money;
 readonly class SubscriptionDto
 {
     public function __construct(
-        public int             $id,
-        public int             $userId,
-        public string          $email,
-        public string          $cardToken,
-        public Money           $price,
-        public Carbon          $nextRenewal,
+        public int $id,
+        public int $userId,
+        public string $email,
+        public string $cardToken,
+        public Money $price,
+        public Carbon $nextRenewal,
     ) {}
 }

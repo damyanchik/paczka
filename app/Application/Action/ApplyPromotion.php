@@ -4,12 +4,12 @@ declare(strict_types=1);
 
 namespace App\Application\Action;
 
+use App\Application\DTO\ApplyPromotionResultDto;
 use App\Domain\Calculator\DiscountCalculator;
 use App\Domain\Validator\PromotionValidator;
 use App\Infrastructure\Persistence\Eloquent\Repository\CartRepository;
 use App\Infrastructure\Persistence\Eloquent\Repository\PromoCodeRepository;
 use App\Infrastructure\Persistence\Eloquent\Repository\PromoUsageRepository;
-use App\Application\DTO\ApplyPromotionResultDto;
 use Illuminate\Database\ConnectionInterface;
 use Throwable;
 
@@ -29,8 +29,7 @@ readonly class ApplyPromotion
         int $cartId,
         string $code,
         string $email,
-    ): ApplyPromotionResultDto
-    {
+    ): ApplyPromotionResultDto {
         return $this->connection->transaction(
             function () use ($cartId, $code, $email): ApplyPromotionResultDto {
                 $promoCodeDto = $this->promoCodeRepository

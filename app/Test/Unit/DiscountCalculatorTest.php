@@ -18,7 +18,7 @@ class DiscountCalculatorTest extends TestCase
     {
         parent::setUp();
 
-        $this->calculator = new DiscountCalculator();
+        $this->calculator = new DiscountCalculator;
     }
 
     public function test_it_calculates_percent_discount(): void

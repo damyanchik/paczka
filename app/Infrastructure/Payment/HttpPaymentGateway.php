@@ -43,7 +43,7 @@ readonly class HttpPaymentGateway implements PaymentGateway
 
         $paymentId = $response->json('payment_id');
 
-        if (!is_string($paymentId) || $paymentId === '') {
+        if (! is_string($paymentId) || $paymentId === '') {
             throw new RuntimeException('Payment ID is missing.');
         }
 

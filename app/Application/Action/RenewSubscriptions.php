@@ -56,10 +56,10 @@ readonly class RenewSubscriptions
                 amount: $subscription->price,
                 idempotencyKey: $renewal->idempotencyKey,
             );
-        } catch (Throwable $exception) {
+        } catch (Throwable $throwable) {
             $this->renewalRepository->markFailed(
                 renewalId: $renewal->id,
-                error: $exception->getMessage(),
+                error: $throwable->getMessage(),
             );
 
             return;

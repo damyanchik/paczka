@@ -14,7 +14,8 @@ readonly class PromotionStatsController
         private GetPromotionStats $getPromotionStats,
     ) {}
 
-    public function __invoke(GetPromotionStatsRequest $request): JsonResponse {
+    public function __invoke(GetPromotionStatsRequest $request): JsonResponse
+    {
         $stats = $this->getPromotionStats->execute(
             code: $request->code(),
         );

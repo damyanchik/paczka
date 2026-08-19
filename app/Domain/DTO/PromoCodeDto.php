@@ -16,6 +16,5 @@ readonly class PromoCodeDto
         public int $discountValue,
         public Carbon $expiresAt,
         public int $maxUsages,
-    ) {
-    }
+    ) {}
 }

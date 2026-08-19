@@ -15,8 +15,7 @@ readonly class OrderRepository
         int $renewalId,
         string $paymentId,
         Money $total,
-    ): void
-    {
+    ): void {
         OrderEntity::query()->create([
             'user_id' => $userId,
             'subscription_id' => $subscriptionId,

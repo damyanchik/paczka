@@ -7,7 +7,12 @@ namespace App\Infrastructure\Persistence\Eloquent\Entity;
 use App\Infrastructure\Persistence\Cast\MoneyCast;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Money\Money;
 
+/**
+ * @property int $id
+ * @property Money $total_amount
+ */
 class CartEntity extends Model
 {
     protected $table = 'carts';
@@ -23,6 +28,7 @@ class CartEntity extends Model
         ];
     }
 
+    /** @return HasMany<PromoUsageEntity, $this> */
     public function promoUsages(): HasMany
     {
         return $this->hasMany(PromoUsageEntity::class);

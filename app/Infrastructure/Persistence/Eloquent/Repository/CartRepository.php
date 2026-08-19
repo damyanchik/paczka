@@ -25,8 +25,7 @@ class CartRepository
     public function updateTotal(
         int $cartId,
         Money $total,
-    ): void
-    {
+    ): void {
         $cart = CartEntity::query()->findOrFail($cartId);
 
         $cart->update([

@@ -1,0 +1,61 @@
+services:
+    app:
+        build:
+            context: .
+            dockerfile: Dockerfile
+
+        container_name: paczka-app
+
+        ports:
+            - "8000:8000"
+
+        environment:
+            APP_ENV: local
+            APP_DEBUG: "true"
+            APP_URL: http://localhost:8000
+
+            DB_CONNECTION: mysql
+            DB_HOST: db
+            DB_PORT: 3306
+            DB_DATABASE: paczka
+            DB_USERNAME: paczka
+            DB_PASSWORD: paczka
+
+            PAYMENT_URL: ${PAYMENT_URL:-}
+            PAYMENT_SECRET: ${PAYMENT_SECRET:-}
+
+        depends_on:
+            db:
+                condition: service_healthy
+
+    db:
+        image: mysql:8.4
+
+        container_name: paczka-db
+
+        environment:
+            MYSQL_DATABASE: paczka
+            MYSQL_USER: paczka
+            MYSQL_PASSWORD: paczka
+            MYSQL_ROOT_PASSWORD: root
+
+        ports:
+            - "3307:3306"
+
+        volumes:
+            - mysql-data:/var/lib/mysql
+
+        healthcheck:
+            test:
+              [
+                  "CMD-SHELL",
+                  "mysqladmin ping -h localhost -uroot -p$$MYSQL_ROOT_PASSWORD --silent"
+              ]
+            interval: 5s
+            timeout: 5s
+            retries: 10
+            start_period: 10s
+
+volumes:
+    mysql-data:
+
