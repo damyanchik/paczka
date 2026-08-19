@@ -26,7 +26,7 @@ readonly class PromotionStatsController
                     'type' => $stat->type->value,
                     'discount_value' => $stat->discountValue,
                     'usages' => $stat->usages,
-                    'cart_sum' => $stat->cartValue->getAmount(),
+                    'cart_sum' => $stat->cartSum->getAmount(),
                     'currency' => 'PLN',
                 ]
             )

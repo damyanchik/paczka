@@ -15,6 +15,8 @@ class AppServiceProvider extends ServiceProvider
             PaymentGateway::class,
             HttpPaymentGateway::class,
         );
+
+        $this->mergeConfigFrom(app_path('Resource/config/services.php'), 'services');
     }
 
     public function boot(): void

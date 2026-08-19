@@ -19,6 +19,7 @@ class SubscriptionEntity extends Model
         return [
             'price_amount' => MoneyCast::class,
             'next_renewal' => 'datetime',
+            'card_expires_at' => 'date',
             'active' => 'boolean',
         ];
     }

@@ -1,5 +1,6 @@
 <?php
 
+use App\Presentation\Http\Controller\ExpiringCardsController;
 use App\Presentation\Http\Controller\PromotionController;
 use App\Presentation\Http\Controller\PromotionStatsController;
 use Illuminate\Support\Facades\Route;
@@ -10,8 +11,17 @@ Route::prefix('api')
             '/carts/{cartId}/promotion',
             PromotionController::class,
         );
-        Route::get(
-            '/promotions/stats',
-            PromotionStatsController::class,
-        );
+
+        Route::prefix('dashboard')
+            ->group(function (): void {
+                Route::get(
+                    '/promotions/stats',
+                    PromotionStatsController::class,
+                );
+
+                Route::get(
+                    '/subscriptions/expiring-cards',
+                    ExpiringCardsController::class,
+                );
+            });
     });

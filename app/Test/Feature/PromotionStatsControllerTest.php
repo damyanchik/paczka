@@ -13,44 +13,44 @@ use Illuminate\Foundation\Testing\RefreshDatabase;
 use Money\Money;
 use Tests\TestCase;
 
-final class PromotionStatsControllerTest extends TestCase
+class PromotionStatsControllerTest extends TestCase
 {
     use RefreshDatabase;
 
     public function test_it_returns_promotion_statistics(): void
     {
-        $promoCode = new PromoCodeEntity();
-        $promoCode->code = 'PROMO10';
-        $promoCode->type = PromotionTypeEnum::PERCENT;
-        $promoCode->discount_value = 10;
-        $promoCode->expires_at = Carbon::parse('2026-12-31');
-        $promoCode->max_usages = 100;
-        $promoCode->save();
+        $promoCode = PromoCodeEntity::query()->create([
+            'code' => 'PROMO10',
+            'type' => PromotionTypeEnum::PERCENT,
+            'discount_value' => 10,
+            'expires_at' => Carbon::parse('2026-12-31'),
+            'max_usages' => 100,
+        ]);
 
-        $firstCart = new CartEntity();
-        $firstCart->total_amount = Money::PLN(10000);
-        $firstCart->save();
+        $firstCart = CartEntity::query()->create([
+            'total_amount' => Money::PLN(10000),
+        ]);
 
-        $secondCart = new CartEntity();
-        $secondCart->total_amount = Money::PLN(20000);
-        $secondCart->save();
+        $secondCart = CartEntity::query()->create([
+            'total_amount' => Money::PLN(20000),
+        ]);
 
-        $firstUsage = new PromoUsageEntity();
-        $firstUsage->promo_code_id = $promoCode->id;
-        $firstUsage->cart_id = $firstCart->id;
-        $firstUsage->email = 'first@example.com';
-        $firstUsage->used_at = Carbon::now();
-        $firstUsage->save();
+        PromoUsageEntity::query()->create([
+            'promo_code_id' => $promoCode->id,
+            'cart_id' => $firstCart->id,
+            'email' => 'first@example.com',
+            'used_at' => Carbon::now(),
+        ]);
 
-        $secondUsage = new PromoUsageEntity();
-        $secondUsage->promo_code_id = $promoCode->id;
-        $secondUsage->cart_id = $secondCart->id;
-        $secondUsage->email = 'second@example.com';
-        $secondUsage->used_at = Carbon::now();
-        $secondUsage->save();
+        PromoUsageEntity::query()->create([
+            'promo_code_id' => $promoCode->id,
+            'cart_id' => $secondCart->id,
+            'email' => 'second@example.com',
+            'used_at' => Carbon::now(),
+        ]);
 
         $response = $this->getJson(
-            '/api/promotions/stats?code=PROMO'
+            '/api/dashboard/promotions/stats?code=PROMO'
         );
 
         $response

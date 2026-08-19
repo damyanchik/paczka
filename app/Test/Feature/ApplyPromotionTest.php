@@ -33,13 +33,11 @@ class ApplyPromotionTest extends TestCase
 
         Carbon::setTestNow('2026-08-19 12:00:00');
 
-        $promoUsageRepository = new PromoUsageRepository();
-
         $this->applyPromotion = new ApplyPromotion(
             connection: DB::connection(),
             promoCodeRepository: new PromoCodeRepository(),
             cartRepository: new CartRepository(),
-            promoUsageRepository: $promoUsageRepository,
+            promoUsageRepository: new PromoUsageRepository(),
             promotionValidator: new PromotionValidator(),
             discountCalculator: new DiscountCalculator(),
         );
@@ -55,7 +53,7 @@ class ApplyPromotionTest extends TestCase
     public function test_it_applies_percentage_promotion(): void
     {
         $cart = $this->createCart(
-            total: Money::PLN(10_000),
+            total: Money::PLN(10000),
         );
 
         $promoCode = $this->createPromoCode(
@@ -73,16 +71,16 @@ class ApplyPromotionTest extends TestCase
         );
 
         self::assertTrue(
-            $result->discount->equals(Money::PLN(1_000))
+            $result->discount->equals(Money::PLN(1000))
         );
 
         self::assertTrue(
-            $result->newTotal->equals(Money::PLN(9_000))
+            $result->newTotal->equals(Money::PLN(9000))
         );
 
         $this->assertDatabaseHas('carts', [
             'id' => $cart->id,
-            'total_amount' => 9_000,
+            'total_amount' => 9000,
         ]);
 
         $this->assertDatabaseHas('promo_usages', [
@@ -95,7 +93,7 @@ class ApplyPromotionTest extends TestCase
     public function test_it_rejects_expired_promotion(): void
     {
         $cart = $this->createCart(
-            total: Money::PLN(10_000),
+            total: Money::PLN(10000),
         );
 
         $this->createPromoCode(
@@ -118,7 +116,7 @@ class ApplyPromotionTest extends TestCase
         } finally {
             $this->assertDatabaseHas('carts', [
                 'id' => $cart->id,
-                'total_amount' => 10_000,
+                'total_amount' => 10000,
             ]);
 
             $this->assertDatabaseCount('promo_usages', 0);
@@ -128,17 +126,17 @@ class ApplyPromotionTest extends TestCase
     public function test_it_rejects_promotion_when_usage_limit_is_reached(): void
     {
         $cart = $this->createCart(
-            total: Money::PLN(10_000),
+            total: Money::PLN(10000),
         );
 
         $anotherCart = $this->createCart(
-            total: Money::PLN(10_000),
+            total: Money::PLN(10000),
         );
 
         $promoCode = $this->createPromoCode(
             code: 'LIMITED',
             type: PromotionTypeEnum::AMOUNT,
-            discountValue: 2_000,
+            discountValue: 2000,
             expiresAt: Carbon::parse('2026-08-31'),
             maxUsages: 1,
         );
@@ -163,13 +161,13 @@ class ApplyPromotionTest extends TestCase
     public function test_it_rejects_promotion_already_used_for_cart(): void
     {
         $cart = $this->createCart(
-            total: Money::PLN(10_000),
+            total: Money::PLN(10000),
         );
 
         $promoCode = $this->createPromoCode(
             code: 'ONCE',
             type: PromotionTypeEnum::AMOUNT,
-            discountValue: 2_000,
+            discountValue: 2000,
             expiresAt: Carbon::parse('2026-08-31'),
             maxUsages: 100,
         );
@@ -193,11 +191,9 @@ class ApplyPromotionTest extends TestCase
 
     private function createCart(Money $total): CartEntity
     {
-        $cart = new CartEntity();
-        $cart->total_amount = $total;
-        $cart->save();
-
-        return $cart;
+        return CartEntity::query()->create([
+            'total_amount' => $total,
+        ]);
     }
 
     private function createPromoCode(
@@ -207,28 +203,24 @@ class ApplyPromotionTest extends TestCase
         Carbon $expiresAt,
         int $maxUsages,
     ): PromoCodeEntity {
-        $promoCode = new PromoCodeEntity();
-        $promoCode->code = $code;
-        $promoCode->type = $type;
-        $promoCode->discount_value = $discountValue;
-        $promoCode->expires_at = $expiresAt;
-        $promoCode->max_usages = $maxUsages;
-        $promoCode->save();
-
-        return $promoCode;
+        return PromoCodeEntity::query()->create([
+            'code' => $code,
+            'type' => $type,
+            'discount_value' => $discountValue,
+            'expires_at' => $expiresAt,
+            'max_usages' => $maxUsages,
+        ]);
     }
 
     private function createPromoUsage(
         int $promoCodeId,
         int $cartId,
     ): PromoUsageEntity {
-        $usage = new PromoUsageEntity();
-        $usage->promo_code_id = $promoCodeId;
-        $usage->cart_id = $cartId;
-        $usage->email = 'previous@example.com';
-        $usage->used_at = Carbon::now();
-        $usage->save();
-
-        return $usage;
+        return PromoUsageEntity::query()->create([
+            'promo_code_id' => $promoCodeId,
+            'cart_id' => $cartId,
+            'email' => 'previous@example.com',
+            'used_at' => Carbon::now(),
+        ]);
     }
 }

@@ -7,7 +7,7 @@ namespace App\Test\Feature;
 use App\Domain\Enum\PromotionTypeEnum;
 use App\Infrastructure\Persistence\Eloquent\Entity\CartEntity;
 use App\Infrastructure\Persistence\Eloquent\Entity\PromoCodeEntity;
-use Carbon\CarbonImmutable;
+use Carbon\Carbon;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Money\Money;
 use Tests\TestCase;
@@ -20,31 +20,29 @@ class PromotionControllerTest extends TestCase
     {
         parent::setUp();
 
-        CarbonImmutable::setTestNow(
-            CarbonImmutable::parse('2026-08-19 12:00:00')
-        );
+        Carbon::setTestNow('2026-08-19 12:00:00');
     }
 
     protected function tearDown(): void
     {
-        CarbonImmutable::setTestNow();
+        Carbon::setTestNow();
 
         parent::tearDown();
     }
 
     public function test_it_applies_promotion_via_api(): void
     {
-        $cart = new CartEntity();
-        $cart->total_amount = Money::PLN(10_000);
-        $cart->save();
+        $cart = CartEntity::query()->create([
+            'total_amount' => Money::PLN(10000),
+        ]);
 
-        $promoCode = new PromoCodeEntity();
-        $promoCode->code = 'PROMO10';
-        $promoCode->type = PromotionTypeEnum::PERCENT;
-        $promoCode->discount_value = 10;
-        $promoCode->expires_at = CarbonImmutable::parse('2026-08-31');
-        $promoCode->max_usages = 100;
-        $promoCode->save();
+        $promoCode = PromoCodeEntity::query()->create([
+            'code' => 'PROMO10',
+            'type' => PromotionTypeEnum::PERCENT,
+            'discount_value' => 10,
+            'expires_at' => Carbon::parse('2026-08-31'),
+            'max_usages' => 100,
+        ]);
 
         $response = $this->postJson(
             "/api/carts/{$cart->id}/promotion",
